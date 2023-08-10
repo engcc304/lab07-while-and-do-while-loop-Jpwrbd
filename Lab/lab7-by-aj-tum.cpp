@@ -1,4 +1,4 @@
-/*
+``` /*
     จงเขียนโปรแกรมทายตัวเลขซึ่งทำงานดังนี้
     - ตอนเริ่มเกมผู้เล่นจะมีคะแนนเต็ม 100
     - โปรแกรมจะสุ่มตัวเลขที่มีค่าตั้งแต่ 1 ถึง 100
@@ -31,16 +31,16 @@
         Do you want to play game (1=play,-1=exit) :
             1
         (Score=100)
-        Guess the winning number (1-100) : 
+        Guess the winning number (1-100) :
             75
         Sorry, the winning number is LOWER than 75. (Score=90)
-        Guess the winning number (1-74) : 
+        Guess the winning number (1-74) :
             20
         Sorry, the winning number is LOWER than 20. (Score=80)
-        Guess the winning number (1-19) : 
+        Guess the winning number (1-19) :
             2
         Sorry, the winning number is HIGHER than 2. (Score=70)
-        Guess the winning number (3-19) : 
+        Guess the winning number (3-19) :
             15
         That is correct! The winning number is 15.
         Score this game: 70
@@ -53,40 +53,46 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main() {
-    srand( time( NULL ) ) ;
-    int RandomNumber = 0 ;
-    int Min = 0 , Max = 100 , PlayOrExit = 0, Score = 100, GuessNumber = -1 ;
-    do {
-        RandomNumber = rand() % 100 + 1 ;
-        printf( "Do you want to play game (1=play,-1=exit) : " ) ;
-        scanf( "%d", &PlayOrExit ) ;
-        if( PlayOrExit == 1 ) {
-            printf( "(Score = %d)\n", Score ) ;
-            printf( "Guess the winning number (%d-%d) :", Min, Max ) ;
-            while( true ) {
-                
-                scanf( "%d", &GuessNumber ) ;
-                //printf( "\n----| %d\n", RandomNumber ) ;
-                if( Score <= 0 ) {
-                    printf( "You loss. your score = %d\n", Score ) ;
-                    break ;
-                }//end if
-
-                if( RandomNumber > GuessNumber ) {
-                    Min = GuessNumber + 1 ;
-                    Score -= 10 ;
-                    printf( "Sorry, the winning number is HIGHER than %d. (Score=%d)\nGuess the winning number (%d-%d) :", GuessNumber, Score, Min, Max ) ;                    
-                } else if( RandomNumber < GuessNumber ) {
-                    Max = GuessNumber - 1 ;
-                    Score -= 10 ;
-                    printf( "Sorry, the winning number is LOWER than %d. (Score=%d)\nGuess the winning number (%d-%d) :", GuessNumber, Score, Min, Max ) ;                    
-                } else {
-                    printf( "That is correct! The winning number is %d.\nScore this game: %d\n", GuessNumber, Score ) ;
-                    break ;
-                }
-            }//end while
-        } else if( PlayOrExit == -1 ) break ;
-    } while( true ) ;
-    return 0 ;
-}//end main function
+int main()
+{
+    srand(time(NULL));
+    int Input, rd = 0, score = 100;
+    int Min=0 , Max=100;
+    do
+    {   
+        rd = rand() % 100 + 1;
+        printf("Do you want to play game (1=play,-1=exit) :\n");
+        scanf("%d", &Input);
+        if (Input == -1 || !Input)
+        {
+            break;
+        }
+        printf("(Score=100)\n");
+        printf("Guess the winning number (1-100) :\n");
+        while (Input)
+        {
+            scanf("%d", &Input);
+            printf("%d\n", rd);
+            if (rd < Input)
+            {
+                Max = Input - 1;
+                printf("Sorry, the winning number is LOWER than %d. (Score=%d)\n", Input, score -= 10);
+                printf("Guess the winning number (%d-%d) :\n" , Min , Max );
+            }
+            else if (rd > Input)
+            {
+                Min = Input + 1;
+                printf("Sorry, the winning number is HIGHER than %d. (Score=%d)\n", Input, score -= 10);
+                printf("Guess the winning number (%d-%d) :\n" , Min , Max);
+            }
+            else if( Input == rd){
+                printf("That is correct! The winning number is %d. \nScore this game: %d\n" , rd , score);
+                break;
+            }
+            if(score == 0){
+                printf("You lose Noob GG bruh \nCorrect answer is %d\n" , rd);
+                break;
+            }
+        }
+    }
+    }while(Input == -1);

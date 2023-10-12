@@ -48,54 +48,56 @@
         Do you want to play game (1=play,-1=exit) :
             -1
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-int main()
-{
-    srand(time(NULL));
-    int Input, rd = 0, score = 100;
-    int Min=0 , Max=100;
-    do
-    {   
-        rd = rand() % 100 + 1;
-        printf("Do you want to play game (1=play,-1=exit) :\n");
-        scanf("%d", &Input);
-        if (Input == -1 || !Input)
-        {
-            break;
-        }
-        printf("(Score=100)\n");
-        printf("Guess the winning number (1-100) :\n");
-        while (Input)
-        {
-            scanf("%d", &Input);
-            printf("%d\n", rd);
-            if (rd < Input)
-            {
-                Max = Input - 1;
-                printf("Sorry, the winning number is LOWER than %d. (Score=%d)\n", Input, score -= 10);
-                printf("Guess the winning number (%d-%d) :\n" , Min , Max );
-            }
-            else if (rd > Input)
-            {
-                Min = Input + 1;
-                printf("Sorry, the winning number is HIGHER than %d. (Score=%d)\n", Input, score -= 10);
-                printf("Guess the winning number (%d-%d) :\n" , Min , Max);
-            }
-            else if( Input == rd){
-                printf("That is correct! The winning number is %d. \nScore this game: %d\n" , rd , score);
-                break;
-            }
-            if(score == 0){
-                printf("You lose Noob GG bruh \nCorrect answer is %d\n" , rd);
-                break;
-            }
-        }
-    
-    }while(Input == -1);
-
-    return 0 ;
+float scoregame( float score ) { 
+    return score - 10 ; //จะให้มันลบ 10
 }
+void Why() {
+printf( "Do you want to play game (1=play,-1=exit) : \n" ) ;
+}
+
+int Showplay() {
+    srand( time( NULL ) ) ;
+    int RandomNumber = 0 ;
+    int Min = 1 , Max = 100 , PlayOrExit = 1, GuessNumber = -1 ;
+    float Score = 100 ; //คะเเนน
+    do { //เริ่มเกม
+        RandomNumber = rand() % 100 + 1 ;
+        Why() ;
+        scanf( "%d", &PlayOrExit ) ;
+        
+        if( PlayOrExit == 1 ) {
+            printf( "(Score = %.0f)\n", Score ) ;
+
+            printf( "Guess the winning number (%d-%d) : \n", Min, Max ) ;
+            while( true ) {
+                scanf( "%d", &GuessNumber ) ;
+                //printf( "\n----| %d\n", RandomNumber ) ;
+                if( Score <= 0 ) {
+                    printf( "You loss. your score = %.0f\n", Score ) ;
+                    break ;
+                }//end if
+
+                if( RandomNumber > GuessNumber ) {
+                    Min = GuessNumber + 1 ;
+                    Score = scoregame(Score) ; //score = -10 ส่งขึ้นไปจ้า
+                    printf( "Sorry, the winning number is HIGHER than %d. (Score=%.0f)\nGuess the winning number ( %d-%d ) :\n", GuessNumber, Score, Min, Max ) ;                    
+                } else if( RandomNumber < GuessNumber ) {
+                    Max = GuessNumber - 1 ;
+                    Score = scoregame(Score) ; //ดึงค่าฟังก์ชั่นมาใช้งาน
+                    printf( "Sorry, the winning number is LOWER than %d. (Score=%.0f)\nGuess the winning number ( %d-%d ) :\n", GuessNumber, Score, Min, Max ) ;                    
+                } else {
+                    printf( "That is correct! The winning number is %d.\nScore this game: %d\n", GuessNumber, Score ) ;
+                    break ;
+                }
+            }//end while
+        } else if( PlayOrExit == -1 ) break ;
+    } while( true ) ;
+    return 0 ;
+}//end Showplay function
+
+int main() {
+    Showplay() ;
+}//end function main
